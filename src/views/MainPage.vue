@@ -84,7 +84,13 @@
 								+
 							</button>
 						</td>
-						<td v-else />
+						<td
+							v-else
+							class="resultExam"
+							:class="{ 'resultExamNot': !ev.status }"
+						>
+							{{ ev.status ? 'Зачёт' : 'НеЗачёт' }}
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -104,24 +110,51 @@ export default {
 	data() {
 		return {
 			title: '',
-			lessons: [{ title: 'Fizra', evaluations: [] }],
+			lessons: [],
 			select: '5'
 		}
+	},
+
+	mounted() {
+		this.checkStorage()
 	},
 
 	methods: {
 		addLesson() {
 			if (this.title.length >= 1) {
-				const newLesson = { title: this.title, evaluations: [], absenteeism: [] }
+				const newLesson = { title: this.title, evaluations: [], status: null }
 				this.lessons.push(newLesson)
+				localStorage.setItem('lessons', JSON.stringify(this.lessons))
 				this.title = ''
 			}
 		},
 
 		addEval(index) {
 			this.lessons[index].evaluations.push(this.select)
+			const sum = this.lessons[index].evaluations.reduce((prev, curr) => {
+				return prev += Number(curr)
+			}, 0)
+			const propuska = this.lessons[index].evaluations.reduce((prev, curr) => {
+				if (curr === 'уваж') {
+					prev.first += 1
+				} else if (curr === 'неуваж') {
+					prev.last += 1
+				}
+				return prev
+			}, { first: 0, last: 0 })
+
+			const res = sum / this.lessons[index].evaluations.length
+			const resP = propuska.first / (propuska.first + propuska.last)
+			this.lessons[index].status = (res < 4 || resP < .9) ? false : true
+			localStorage.setItem('lessons', JSON.stringify(this.lessons))
 			this.select = '5'
+		},
+
+		checkStorage() {
+			const check = localStorage.getItem('lessons')
+			this.lessons = !check ? [] : JSON.parse(check)
 		}
+
 	},
 }
 </script>
@@ -240,5 +273,14 @@ ul {
 	font-size: 1.8rem;
 	color: #333;
 	margin-top: 2rem;
+}
+
+.resultExam {
+	padding: 1rem;
+	background-color: green;
+
+	&Not {
+		background-color: red;
+	}
 }
 </style>
