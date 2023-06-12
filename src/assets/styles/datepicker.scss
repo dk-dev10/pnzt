@@ -1,0 +1,31 @@
+$dp__font_family: PTSansCaption, Roboto, sans-serif;
+$dp__calendar_header_cell_padding: 0 0.6rem;
+$dp__border_radius: 2.5px;
+$dp__cell_size: 1.7rem;
+$dp__cell_padding: 0;
+$dp__common_padding: 0 10rem;
+$dp__menu_min_width: 0;
+$dp__row_margin: 0;
+
+@import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
+.dp__theme_light {
+  --dp-background-color: #F2F9FD;
+  --dp-text-color: #000000;
+  --dp-hover-color: #FFFFFF;
+  --dp-hover-text-color: #000000;
+  --dp-hover-icon-color: #959595;
+  --dp-primary-color: #FFFFFF;
+  --dp-primary-text-color: #000000;
+  --dp-secondary-color: transparent;
+  --dp-border-color: transparent;
+  --dp-menu-border-color: transparent;
+  --dp-border-color-hover: #aaaeb7;
+  --dp-disabled-color: #f6f6f6;
+  --dp-scroll-bar-background: #f3f3f3;
+  --dp-scroll-bar-color: #959595;
+  --dp-success-color: #76d275;
+  --dp-success-color-disabled: #a3d9b1;
+  --dp-icon-color: #959595;
+  --dp-danger-color: #ff6f60;
+  --dp-highlight-color: rgba(25, 118, 210, 0.1);
+}

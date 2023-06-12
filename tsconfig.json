@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
+    "types": [
+      "vite/client",
+      "@types/dompurify",
+      "@types/yandex-maps"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@modules/*": [
+        "src/modules/*"
+      ],
+      "*": [
+        "node_modules/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.config.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "vue.inlayHints.optionsWrapper": false
+}

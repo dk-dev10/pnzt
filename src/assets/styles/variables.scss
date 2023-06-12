@@ -1,0 +1,95 @@
+:root {
+  --color-accent-light: #DDF3FF;
+  --color-bg-logo: #16A5F0;
+  --color-main-text: #010E15;
+  --color-accent: #0077B6;
+  --color-min-text: #6B7A8E;
+  --color-focused: #031721;
+  --color-bg-disabled: #848484;
+  --color-text-disabeld: #A7A7A7;
+  --color-text-light: #98C3DA;
+  --color-bg-light: #F2F9FD;
+  --color-text-blue: #4999C5;
+  --color-text-grey: #979797;
+  --color-text-green: #17A300;
+  --color-text-red: #DD4141;
+  --color-bg-grey: #E7E7E7;
+  --color-cell-light: #EDF8FF;
+  --color-suom-menu: #5A9AD4;
+  --color-suom-light: #DEEBF7;
+  --color-summ-green: #548235;
+  --color-summ-accent: #314c1f;
+  --color-summ-light: #e2f0d9;
+}
+
+@mixin scroll-bar {
+  ::-webkit-scrollbar {
+    display: block;
+    width: 1.2rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-accent-light);
+    width: 1.2rem;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: 0.6rem;
+    border-radius: 10rem;
+    background: var(--color-accent);
+  }
+}
+@mixin scroll-bar-thin {
+  @include scroll-bar;
+  ::-webkit-scrollbar {
+    width: 0.6rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    width: 0.6rem;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: 0.3rem;
+  }
+}
+
+@mixin overflow-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin transition-scale {
+  .scale-enter-active,
+  .scale-leave-active {
+    transform: scale(1);
+    transition: all 0.5s ease;
+  }
+
+  .scale-enter-from,
+  .scale-leave-to {
+    transform: scale(0);
+  }
+
+  .scale-leave-from {
+    transform: scale(1);
+  }
+
+  .scale-leave-to {
+    transform: scale(0);
+  }
+}
+@mixin transition-fade {
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+}

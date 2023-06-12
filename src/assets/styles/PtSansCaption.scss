@@ -1,0 +1,16 @@
+@font-face {
+	font-display: swap;
+	font-family: 'PTSansCaption';
+	src: url('../fonts/PtSansCaption/PTSansCaption-Bold.eot');
+	src: local('☺'), url('@/assets/fonts/PtSansCaption/PTSansCaption-Bold.woff') format('woff'), url('../fonts/PtSansCaption/PTSansCaption-Bold.ttf') format('truetype'), url('../fonts/PtSansCaption/PTSansCaption-Bold.svg') format('svg');
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-display: swap;
+	font-family: 'PTSansCaption';
+	src: url('../fonts/PtSansCaption/PTSansCaption-Regular.eot');
+	src: local('☺'), url('@/assets/fonts/PtSansCaption/PTSansCaption-Regular.woff') format('woff'), url('../fonts/PtSansCaption/PTSansCaption-Regular.ttf') format('truetype'), url('../fonts/PtSansCaption/PTSansCaption-Regular.svg') format('svg');
+	font-weight: 400;
+	font-style: normal;
+}

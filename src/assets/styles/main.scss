@@ -1,0 +1,39 @@
+@use 'vuetify' with (
+  $utilities: false,
+  $color-pack: false,
+);
+@import "./variables.scss";
+@import "./PtSansCaption.scss";
+@import "./datepicker.scss";
+
+html {
+  font-family: PTSansCaption, Roboto, sans-serif !important;
+  font-size: 10px !important;
+  letter-spacing: 0 !important;
+  height: 100vh !important;
+  width: 100vw !important;
+
+  @media screen and (min-width: 1280px) {
+    font-size: 10px !important;
+  }
+  @media screen and (min-width: 1400px) {
+    font-size: 12px !important;
+  }
+  @media screen and (min-width: 1700px) {
+    font-size: 13px !important;
+  }
+  @media screen and (min-width: 1800px) {
+    font-size: 15px !important;
+  }
+  @media screen and (min-width: 2100px) {
+    font-size: 20px !important;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+

@@ -1,0 +1,133 @@
+{
+"districts": [
+  {
+    "name": "Центральный округ",
+    "hc-keys": [
+      "ru-sm",
+      "ru-tv",
+      "ru-ys",
+      "ru-kt",
+      "ru-iv",
+      "ru-vl",
+      "ru-rz",
+      "ru-tb",
+      "ru-vr",
+      "ru-lp",
+      "ru-tl",
+      "ru-ms",
+      "ru-2509",
+      "ru-kg",
+      "ru-br",
+      "ru-ol",
+      "ru-ks",
+      "ru-bl"
+    ]
+  },
+  {
+    "name": "Северо-Кавказский округ",
+    "hc-keys": [
+      "ru-kc",
+      "ru-st",
+      "ru-kb",
+      "ru-no",
+      "ru-in",
+      "ru-cn",
+      "ru-da"
+    ]
+  },
+  {
+    "name": "Сибирский округ",
+    "hc-keys": [
+      "ru-ky",
+      "ru-to",
+      "ru-om",
+      "ru-ns",
+      "ru-ke",
+      "ru-al",
+      "ru-ga",
+      "ru-kk",
+      "ru-tu",
+      "ru-ir"
+    ]
+  },
+  {
+    "name": "Северо-Западный округ",
+    "hc-keys": [
+      "ru-sp",
+      "ru-kn",
+      "ru-mm",
+      "ru-nn",
+      "ru-ko",
+      "ru-ar",
+      "ru-vo",
+      "ru-ki",
+      "ru-ln",
+      "ru-ps",
+      "ru-ng"
+    ]
+  },
+  {
+    "name": "Приволжский округ",
+    "hc-keys": [
+      "ru-ob",
+      "ru-bk",
+      "ru-pe",
+      "ru-ud",
+      "ru-kv",
+      "ru-nz",
+      "ru-me",
+      "ru-tt",
+      "ru-sa",
+      "ru-ul",
+      "ru-cv",
+      "ru-mr",
+      "ru-pz",
+      "ru-sr"
+    ]
+  },
+  {
+    "name": "Дальневосточный округ",
+    "hc-keys": [
+      "ru-sl",
+      "ru-ka",
+      "ru-2485",
+      "ru-mg",
+      "ru-ck",
+      "ru-kh",
+      "ru-am",
+      "ru-yv",
+      "ru-pr",
+      "ru-bu",
+      "ru-ct"
+    ]
+  },
+  {
+    "name": "Южный округ",
+    "hc-keys": [
+      "ru-as",
+      "ru-kl",
+      "ru-vg",
+      "ru-ro",
+      "ru-ad",
+      "ru-kd",
+      "ru-sc",
+      "ru-kr",
+      "ua-ks",
+      "ua-zp",
+      "ua-dt",
+      "ua-lh"
+    ]
+  },
+  {
+    "name": "Уральский округ",
+    "hc-keys": [
+      "ru-yn",
+      "ru-km",
+      "ru-ty",
+      "ru-sv",
+      "ru-cl",
+      "ru-ku"
+    ]
+  }
+]
+}
