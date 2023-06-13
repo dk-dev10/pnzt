@@ -1,160 +1,210 @@
 <template>
 	<div class="mainPage">
 		<h2>Оценки студента Иванова И.И.</h2>
-		<form
-			class="customForm"
-			@submit.prevent.stop
-		>
-			<div class="formItem">
-				<label for="title">Название пары: </label>
+
+		<div class="customCalc">
+			<div>
+				<label>Название предмета:</label>
 				<input
-					id="title"
+					ref="subjectInput"
 					v-model="title"
-					placeholder="Назвние предмета"
+					type="text"
 				>
 			</div>
-			<button
-				class="customBtn"
-				@click="addLesson"
-			>
-				Добавить
-			</button>
-		</form>
-		<!-- Раздел Оценок -->
-		<div class="evaluations">
-			<table v-if="lessons.length >= 1">
-				<thead>
-					<tr>
-						<th>Предмет</th>
-						<th>Оценки</th>
-						<th />
-					</tr>
-				</thead>
-				<tbody>
-					<tr
-						v-for="(ev, idx) in lessons"
-						:key="idx"
-					>
-						<td>{{ ev.title }}</td>
-						<td>
-							<ul>
-								<li
-									v-for="(evls, uid) in ev.evaluations"
-									:key="uid"
-								>
-									{{ evls }}
-								</li>
-							</ul>
-						</td>
-						<td
-							v-if="ev?.evaluations.length < 10"
-							class="addEval"
-						>
-							<select
-								id="selectedId"
-								v-model="select"
-								class="selectedId"
-							>
-								<option value="1">
-									1
-								</option>
-								<option value="2">
-									2
-								</option>
-								<option value="3">
-									3
-								</option>
-								<option value="4">
-									4
-								</option>
-								<option value="5">
-									5
-								</option>
-								<option value="уваж">
-									уваж
-								</option>
-								<option value="неуваж">
-									неуваж
-								</option>
-							</select>
-							<button
-								class="customBtn"
-								@click="() => addEval(idx)"
-							>
-								+
-							</button>
-						</td>
-						<td
-							v-else
-							class="resultExam"
-							:class="{ 'resultExamNot': !ev.status }"
-						>
-							{{ ev.status ? 'Зачёт' : 'НеЗачёт' }}
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div>
+				<label>Количество оценок:</label>
+				<input
+					ref="gradesInput"
+					v-model="numberOfGrades"
+					type="number"
+					@change="updateGrades"
+				>
+			</div>
 
 			<div
-				v-else
-				class="empty__evaluations"
+				v-if="grades.length > 0"
+				class="evaluations"
 			>
-				Добавьте название пары сверху!
+				<div
+					v-for="(_, index) in grades"
+					:key="index"
+					class="evaluations__item"
+				>
+					<input
+						:ref="`gradeInput_${index}`"
+						v-model="grades[index]"
+						type="number"
+						min="1"
+						max="5"
+					>
+				</div>
+			</div>
+
+			<div class="passes">
+				<div>
+					<label>Доля пропущенных занятий (уважительные причины):</label>
+					<input
+						v-model="validAbsences"
+						type="number"
+					>
+				</div>
+				<div>
+					<label>Доля пропущенных занятий (неуважительные причины):</label>
+					<input
+						v-model="invalidAbsences"
+						type="number"
+					>
+				</div>
+			</div>
+
+			<button
+				class="customBtn"
+				@click="calculateResults"
+			>
+				Рассчитать
+			</button>
+
+			<div v-if="resultsCalculated">
+				<h2>Результаты:</h2>
+				<p v-if="isPassing">
+					Зачет получен!
+				</p>
+				<p v-else>
+					Зачет не получен.
+				</p>
+				<p>Средний балл: {{ averageGrade }}</p>
+				<p>Доля пропущенных занятий (уважительные причины): {{ validAbsencePercentage }}%</p>
+				<p>Доля пропущенных занятий (неуважительные причины): {{ invalidAbsencePercentage }}%</p>
+				<button
+					class="customBtn"
+					@click="addStorage"
+				>
+					Сохранить
+				</button>
+			</div>
+		</div>
+		<div
+			v-if="lessons.length > 0"
+			class="lastResults"
+		>
+			<h2>Результаты прошлых предметов:</h2>
+			<div
+				v-for="(item, idx) in lessons"
+				:key="idx"
+			>
+				<p>
+					{{ item.result ? 'Зачет получен!' : 'Зачет не получен.' }}
+				</p>
+				<p>Средний балл: {{ item.eval }}</p>
+				<p>Доля пропущенных занятий (уважительные причины): {{ item.validAbsences }}%</p>
+				<p>Доля пропущенных занятий (неуважительные причины): {{ item.invalidAbsences }}%</p>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+
+
 export default {
 	data() {
 		return {
 			title: '',
-			lessons: [],
-			select: '5'
+			numberOfGrades: 0,
+			grades: [],
+			validAbsences: 0,
+			invalidAbsences: 0,
+			resultsCalculated: false,
+			averageGrade: 0,
+			validAbsencePercentage: 0,
+			invalidAbsencePercentage: 0,
+			isPassing: false,
+			lessons: []
 		}
 	},
-
+	computed: {
+		titleFilled() {
+			return this.title.trim() !== ''
+		},
+		numberOfGradesFilled() {
+			return this.numberOfGrades > 0
+		},
+		validAbsencesFilled() {
+			return this.validAbsences >= 0
+		},
+		invalidAbsencesFilled() {
+			return this.invalidAbsences >= 0
+		},
+	},
 	mounted() {
 		this.checkStorage()
 	},
-
 	methods: {
-		addLesson() {
-			if (this.title.length >= 1) {
-				const newLesson = { title: this.title, evaluations: [], status: null }
-				this.lessons.push(newLesson)
-				localStorage.setItem('lessons', JSON.stringify(this.lessons))
-				this.title = ''
-			}
-		},
-
-		addEval(index) {
-			this.lessons[index].evaluations.push(this.select)
-			const sum = this.lessons[index].evaluations.reduce((prev, curr) => {
-				return prev += Number(curr)
-			}, 0)
-			const propuska = this.lessons[index].evaluations.reduce((prev, curr) => {
-				if (curr === 'уваж') {
-					prev.first += 1
-				} else if (curr === 'неуваж') {
-					prev.last += 1
-				}
-				return prev
-			}, { first: 0, last: 0 })
-
-			const res = sum / this.lessons[index].evaluations.length
-			const resP = propuska.first / (propuska.first + propuska.last)
-			this.lessons[index].status = (res < 4 || resP < .9) ? false : true
-			localStorage.setItem('lessons', JSON.stringify(this.lessons))
-			this.select = '5'
-		},
-
 		checkStorage() {
-			const check = localStorage.getItem('lessons')
+			const check = localStorage.getItem("lessons")
 			this.lessons = !check ? [] : JSON.parse(check)
-		}
+		},
+		addStorage() {
+			const newLesson = { title: this.title, eval: this.averageGrade, result: this.isPassing, validAbsences: this.validAbsencePercentage, invalidAbsences: this.invalidAbsencePercentage }
+			this.lessons.push(newLesson)
+			localStorage.setItem('lessons', JSON.stringify(this.lessons))
 
+			this.title = ''
+			this.numberOfGrades = 0
+			this.grades = []
+			this.validAbsences = 0
+			this.invalidAbsences = 0
+			this.resultsCalculated = false
+			this.averageGrade = 0
+			this.validAbsencePercentage = 0
+			this.invalidAbsencePercentage = 0
+			this.isPassing = false
+		},
+		updateGrades() {
+			this.grades = Array.from({ length: this.numberOfGrades }, () => 5)
+		},
+		gradeFilled(index) {
+			return this.grades[index] >= 0
+		},
+		calculateResults() {
+			if (
+				!this.titleFilled ||
+				!this.numberOfGradesFilled ||
+				!this.validAbsencesFilled ||
+				!this.invalidAbsencesFilled ||
+				this.grades.some((grade) => grade < 0 || grade > 5)
+			) {
+				alert('Пожалуйста, заполните все поля корректно.')
+				if (!this.titleFilled) {
+					this.$refs.subjectInput.focus()
+				} else if (!this.numberOfGradesFilled) {
+					this.$refs.gradesInput.focus()
+				} else if (!this.validAbsencesFilled) {
+					this.$refs.validAbsencesInput.focus()
+				} else if (!this.invalidAbsencesFilled) {
+					this.$refs.invalidAbsencesInput.focus()
+				} else {
+					for (let i = 0; i < this.grades.length; i++) {
+						if (!this.gradeFilled(i)) {
+							this.$refs[`gradeInput_${i}`][0].focus()
+							break
+						}
+					}
+				}
+				return
+			}
+
+			const sum = this.grades.reduce((accumulator, grade) => accumulator + grade, 0)
+			this.averageGrade = sum / this.numberOfGrades
+			this.validAbsencePercentage = Math.floor((this.validAbsences / this.numberOfGrades) * 100)
+			this.invalidAbsencePercentage = Math.floor((this.invalidAbsences / this.numberOfGrades) * 100)
+
+			// Проверка условий для получения зачета
+			this.isPassing = (this.averageGrade > 4 && this.invalidAbsencePercentage < 10) ? true : false
+
+			this.resultsCalculated = true
+		},
 	},
 }
 </script>
@@ -163,52 +213,6 @@ export default {
 input {
 	padding: 5px 20px;
 	border: 1px solid #333;
-}
-
-table {
-	border-collapse: collapse;
-	width: 100%;
-}
-
-th,
-td {
-	text-align: left;
-	padding: 8px;
-	border-bottom: 1px solid #ddd;
-}
-
-th {
-	background-color: #f2f2f2;
-}
-
-tr {
-	td {
-		&:first-child {
-			width: 15%;
-		}
-
-		width: 85%;
-
-		ul {
-			display: flex;
-			width: 100%;
-
-			li {
-				width: 12%;
-				border-left: 1px solid #000;
-				padding: 0 10px;
-				text-align: center;
-			}
-		}
-	}
-
-	&:hover {
-		background-color: #f5f5f5;
-	}
-}
-
-.addEval {
-	display: flex;
 }
 
 .selectedId {
@@ -220,67 +224,46 @@ tr {
 	margin-right: 10px;
 }
 
-/* Стилизация опций выпадающего списка */
-.selectedId option {
-	padding: 8px;
-}
-
-/* Стилизация выбранного значения */
-.selectedId option:checked {
-	background-color: #f2f2f2;
-}
-
-ul {
-	list-style: none;
-}
-
 .mainPage {
 	margin-top: 5%;
 	min-height: 50vh;
+}
+
+.customCalc {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	font-size: 1.3rem;
 }
 
 .customBtn {
 	border: 1px solid #000;
 	padding: 0.5rem 1.3rem;
 	font-size: 1.3rem;
-}
-
-
-.customForm {
-	margin-top: 2rem;
-	display: flex;
-	gap: 1rem;
-
-
-	.formItem {
-		display: flex;
-		align-items: center;
-		font-size: 1.5rem;
-
-		label {
-			margin-right: 1rem;
-		}
-	}
+	max-width: 30vh;
+	margin: 2rem auto 0;
 }
 
 .evaluations {
 	margin-top: 2rem;
 	font-size: 1.5rem;
+	display: flex;
+	flex-wrap: wrap;
+
+	&__item {
+		width: 10%;
+
+		input {
+			width: 100%;
+		}
+	}
 }
 
-.empty__evaluations {
-	text-align: center;
-	font-size: 1.8rem;
-	color: #333;
-	margin-top: 2rem;
-}
+.lastResults {
+	font-size: 1.3rem;
 
-.resultExam {
-	padding: 1rem;
-	background-color: green;
-
-	&Not {
-		background-color: red;
+	div {
+		margin-top: 10px;
 	}
 }
 </style>
